@@ -1,0 +1,110 @@
+version: "3.3" 
+services: 
+    mongo: 
+      image: mongo:latest 
+      ports: 
+      - target: 27017
+        published: 27017  
+        protocol: tcp 
+      volumes:
+      - ./data:/data
+
+    db_connector:
+      image: jackflanagan93/db_connector
+      ports:
+      - target: 5001
+        published: 5001
+        protocol: tcp
+      depends_on:
+      - mongo
+
+    prize_generator:
+      image: jackflanagan93/prize_generator_large
+      ports:
+      - target: 9003
+        published: 9003
+        protocol: tcp
+      depends_on:
+      - mongo
+      - db_connector
+
+    notification_server:
+      image: jackflanagan93/notification_server
+      ports:
+      - target: 9000
+        published: 9000
+        protocol: tcp
+      depends_on:
+        - mongo
+        - db_connector
+        - prize_generator
+
+    server:
+      image: jackflanagan93/server
+      ports:
+      - target: 8080
+        published: 8080
+        protocol: tcp
+      depends_on:
+      - mongo
+      - db_connector
+      - prize_generator
+
+    text_generator:
+      image: jackflanagan93/text_gen_upc2
+      ports:
+      - target: 9002
+        published: 9002
+        protocol: tcp
+      depends_on:
+      - mongo
+      - db_connector
+      - prize_generator
+      - server
+
+    number_generator:
+      image: jackflanagan93/num_gen_6
+      ports:
+      - target: 9001
+        published: 9001
+        protocol: tcp
+      depends_on:
+      - mongo
+      - db_connector
+      - prize_generator
+      - server
+      - text_generator
+
+    static_website:
+      image: jackflanagan93/static_website
+      ports:
+      - target: 8089
+        published: 8089
+        protocol: tcp
+      depends_on:
+      - mongo
+      - db_connector
+      - prize_generator
+      - server
+      - text_generator
+      - number_generator
+
+    nginx:
+      image: jackflanagan93/nginx
+      volumes:
+      - type: bind
+        source: ./nginx/nginx.conf
+        target: /etc/nginx/nginx.conf
+      ports:
+      - target: 80
+        published: 80
+        protocol: tcp
+      depends_on:
+        - mongo
+        - db_connector
+        - prize_generator
+        - notification_server
+        - server
+        - text_generator
+        - number_generator
+        - static_website

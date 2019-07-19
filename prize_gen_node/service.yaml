@@ -1,0 +1,13 @@
+    
+apiVersion: v1
+kind: Service
+metadata:
+  name: prizegensmall
+spec:
+  selector:
+    app: prizegensmall
+  ports: 
+  - protocol: TCP
+    port: 9003
+    targetPort: 9003
+  type: ClusterIP

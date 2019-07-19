@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notificationserver
+  labels: 
+    app: notificationserver
+spec:
+  selector:
+    matchLabels:
+      app: notificationserver
+  template:
+    metadata:
+      labels:
+        app: notificationserver
+    spec:
+      containers:
+      - name: notificationserver
+        image: jackflanagan93/notification_server:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 9000

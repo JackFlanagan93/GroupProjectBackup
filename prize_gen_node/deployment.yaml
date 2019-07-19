@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prizegensmall
+  labels: 
+    app: prizegensmall
+spec:
+  selector:
+    matchLabels:
+      app: prizegensmall
+  template:
+    metadata:
+      labels:
+        app: prizegensmall
+    spec:
+      containers:
+      - name: client
+        image: jackflanagan93/prize_generator_large:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 9003

@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: textgenlow3
+  labels: 
+    app: textgenlow3
+spec:
+  selector:
+    matchLabels:
+      app: textgenlow3
+  template:
+    metadata:
+      labels:
+        app: textgenlow3
+    spec:
+      containers:
+      - name: textgenlow3
+        image: jackflanagan93/text_gen_low3:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 9002

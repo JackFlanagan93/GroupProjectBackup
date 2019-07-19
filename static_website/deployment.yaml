@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: staticwebsite
+  labels: 
+    app: staticwebsite
+spec:
+  selector:
+    matchLabels:
+      app: staticwebsite
+  template:
+    metadata:
+      labels:
+        app: staticwebsite
+    spec:
+      containers:
+      - name: staticwebsite
+        image: jackflanagan93/static_website:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8089

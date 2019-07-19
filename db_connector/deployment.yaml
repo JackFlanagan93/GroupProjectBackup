@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dbconnector
+  labels: 
+    app: dbconnector
+spec:
+  selector:
+    matchLabels:
+      app: dbconnector
+  template:
+    metadata:
+      labels:
+        app: dbconnector
+    spec:
+      containers:
+      - name: dbconnector
+        image: jackflanagan93/db_connector:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5001
